@@ -1,12 +1,3 @@
-const instana = require('instana-nodejs-sensor');
-// init tracing
-// MUST be done before loading anything else!
-instana({
-    tracing: {
-        enabled: true
-    }
-});
-
 const redis = require('redis');
 const request = require('request');
 const bodyParser = require('body-parser');

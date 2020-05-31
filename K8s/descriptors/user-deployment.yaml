@@ -1,30 +1,28 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  annotations:
-    kompose.cmd: kompose -f ../docker-compose.yaml convert
-    kompose.version: 1.10.0 (8bb0907)
-  creationTimestamp: null
+  name: user-deployment
   labels:
-    io.kompose.service: user
-  name: user
+    app: user
 spec:
   replicas: 1
-  strategy: {}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: user
   template:
     metadata:
-      creationTimestamp: null
       labels:
-        io.kompose.service: user
+        app: user
     spec:
       containers:
-      - image: linuxacademycontent/rs-user:latest
-        name: user
-        env:
-          - name: INSTANA_AGENT_HOST
-            valueFrom:
-              fieldRef:
-                fieldPath: status.hostIP
+      - name: user
+        image: linuxacademycontent/rs-user:latest
+        imagePullPolicy: Always        
         ports:
         - containerPort: 8080
         resources:
@@ -34,5 +32,3 @@ spec:
           requests:
             cpu: 100m
             memory: 50Mi
-      restartPolicy: Always
-status: {}

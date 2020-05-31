@@ -1,25 +1,28 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  annotations:
-    kompose.cmd: kompose -f ../docker-compose.yaml convert
-    kompose.version: 1.10.0 (8bb0907)
-  creationTimestamp: null
+  name: redis-deployment
   labels:
-    io.kompose.service: redis
-  name: redis
+    app: redis
 spec:
   replicas: 1
-  strategy: {}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: redis
   template:
     metadata:
-      creationTimestamp: null
       labels:
-        io.kompose.service: redis
+        app: redis
     spec:
       containers:
-      - image: redis:4.0.6
-        name: redis
+      - name: redis
+        image: redis:4.0.6
+        imagePullPolicy: Always
         ports:
         - containerPort: 6379
         resources:
@@ -29,5 +32,3 @@ spec:
           requests:
             cpu: 100m
             memory: 50Mi
-      restartPolicy: Always
-status: {}

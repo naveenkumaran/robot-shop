@@ -1,25 +1,28 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  annotations:
-    kompose.cmd: kompose -f ../docker-compose.yaml convert
-    kompose.version: 1.10.0 (8bb0907)
-  creationTimestamp: null
-  labels:
-    io.kompose.service: ratings
   name: ratings
+  labels:
+    app: ratings
 spec:
   replicas: 1
-  strategy: {}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: ratings
   template:
     metadata:
-      creationTimestamp: null
       labels:
-        io.kompose.service: ratings
+        app: ratings
     spec:
       containers:
-      - image: linuxacademycontent/rs-ratings:latest
-        name: ratings
+      - name: ratings 
+        image: linuxacademycontent/rs-ratings:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 3306
         resources:
@@ -29,5 +32,3 @@ spec:
           requests:
             cpu: 100m
             memory: 50Mi
-      restartPolicy: Always
-status: {}
