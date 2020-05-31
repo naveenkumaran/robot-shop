@@ -26,12 +26,11 @@ spec:
           ports:
           - containerPort:  8080
           readinessProbe:
-             httpGet:
-               path: /
-               port: 8080
-               initialDelaySeconds: 5
-               periodSeconds: 5
-               successThreshold: 1 
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 5
           resources:
             limits:
               cpu: 200m
