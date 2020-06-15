@@ -1,16 +1,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: web-deployment
+  name: web
   labels:
     app: web
 spec:
   replicas: 1
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxSurge: 1
-      maxUnavailable: 1
   selector:
     matchLabels:
       app: web
@@ -21,16 +16,10 @@ spec:
     spec:
       containers:
         - name:  web
-          image:  linuxacademycontent/rs-web:latest
+          image:  robotshop/rs-web:latest
           imagePullPolicy: Always
           ports:
           - containerPort:  8080
-          readinessProbe:
-            httpGet:
-              path: /
-              port: 8080
-            initialDelaySeconds: 5
-            periodSeconds: 5
           resources:
             limits:
               cpu: 200m
@@ -38,3 +27,4 @@ spec:
             requests:
               cpu: 100m
               memory: 50Mi
+      restartPolicy: Always
