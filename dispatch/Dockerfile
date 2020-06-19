@@ -10,7 +10,6 @@ WORKDIR /go/src/github.com/dispatch
 COPY src/ /go/src/github.com/dispatch
 
 RUN dep init && dep ensure
-RUN go build -o bin/gorcv
 
 FROM golang
 
