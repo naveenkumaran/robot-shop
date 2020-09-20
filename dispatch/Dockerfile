@@ -9,7 +9,7 @@ WORKDIR /go/src/github.com/dispatch
 
 COPY src/ /go/src/github.com/dispatch
 
-RUN dep init && dep ensure
+RUN dep ensure
 
 FROM golang
 
